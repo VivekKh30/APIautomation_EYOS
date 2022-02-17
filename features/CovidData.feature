@@ -46,4 +46,15 @@ Feature: Validation of GET Covid-19 data using Country Code endpoint
     And response should contain an error message as "Bad Request"
 
 
+  Scenario Outline: Validate that number of confirmed cases of India is more than Italy
+    Given Request is sent to GET Covid-19 data for <code> and <code2>
+    Then  response is received with HTTP status code 200
+    And Number of confirmed cases for IN should be greater than IT
+    Examples:
+      | code | code2 |
+      | IN   | IT    |
+
+
+
+
 

@@ -11,8 +11,9 @@ How to Run-
   - To view the reports alongside run, please follow below steps:
     - Download allure
     - run behave --no-capture -f allure_behave.formatter:AllureFormatter -o AllureReports from terminal
-    - Above command will create a xml in AllureReports folder of the project
-    - Run allure serve <<path of xml>>
+    - Above command will create a Json file in AllureReports folder of the project
+    - Run allure serve {path of Json}
+    - Sample report can be found in http://192.168.0.16:58345/index.html
 
 Issues Found-
 

@@ -39,8 +39,7 @@ def step_impl(context, statuscode):
 def step_impl(context):
     time.sleep(0.5)
     for row in context.table:
-        model.expected_values(row[country], row[country_code],
-                              row[latitude], row[latitude])
+        row[country], row[country_code], row[latitude], row[longitude]
 
     for Covid_case_detail in context.Covid_case_details:
         for key, value in Covid_case_detail.items():
@@ -154,5 +153,27 @@ def step_impl(context):
 @then('response should contain an error message as "Bad Request"')
 def step_impl(context):
     time.sleep(0.5)
-    print(context.Covid_case_details['detail'])
+    baseclass.getlogger().info(context.response.status_code)
     assert context.Covid_case_details['detail'] == 'Bad Request'
+
+
+@given('Request is sent to GET Covid-19 data for {code} and {code2}')
+def step_impl(context, code, code2):
+    time.sleep(1)
+    querystring = {"code": code}
+    context.response = baseclass.getRequest(url, baseclass.getDefaultHeaders(), querystring)
+    baseclass.getlogger().info(context.response)
+    querystring2 = {"code": code2}
+    time.sleep(1.5)
+    context.response2 = baseclass.getRequest(url, baseclass.getDefaultHeaders(), querystring2)
+    baseclass.getlogger().info(context.response2)
+    context.Covid_case_details = context.response.json()
+    context.Covid_case_details2 = context.response2.json()
+
+
+@then('Number of confirmed cases for IN should be greater than IT')
+def step_impl(context):
+    time.sleep(0.5)
+    actual_response = context.Covid_case_details[0]
+    actual_response2 = context.Covid_case_details2[0]
+    assert actual_response['confirmed'] > actual_response2['confirmed']
